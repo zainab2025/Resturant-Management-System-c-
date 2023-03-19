@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include <fstream>
 using namespace std;
 
@@ -45,7 +45,8 @@ void add_Product_Discount()
     discounts.close();
 }
 //allowed for customers to show discounts
-void display_Product_Discount(){
+void display_Product_Discount()
+{
     fstream file;
     file.open("product_discounts.txt",ios::in);
     productDiscount d;
@@ -69,3 +70,36 @@ void display_Product_Discount(){
 
 }
 
+void Search_Product(){
+    char product[30];
+    cout<<"  -----Entre the product to check discount-----  ";
+    cin>>product;
+
+    fstream file;
+    file.open("product_discounts.txt",ios::in);
+    productDiscount d;
+    bool found=false;
+    if(file.is_open()){
+         file.read((char*)&d,sizeof(d));
+        while (!file.eof()){
+            if (!strcmp(product,d.Product_name))
+            {
+                cout<<"product: "<<d.Product_name<<'\t'
+                    <<"Amount of disccount: "<<d.Discount_amount<<'\t'
+                    <<"from: "<<d.start_date<<'\t'
+                    <<"to: "<<d.end_date<<'\t'<<endl;
+                found=true;
+            }
+
+             file.read((char*)&d,sizeof(d));
+
+        }
+        if (!found) cout<<"Unfortunately, No discounts Avaliable!\n";
+    }
+    else {
+        cout<<"Ooops!...We Cannot access file"<<endl;
+    }
+
+
+
+}

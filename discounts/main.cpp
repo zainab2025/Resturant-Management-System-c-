@@ -50,17 +50,17 @@ void display_Product_Discount(){
     file.open("product_discounts.txt",ios::in);
     productDiscount d;
     if(file.is_open()){
-        int id_product=0;
+         file.read((char*)&d,sizeof(d));
         while (!file.eof()){
-            file.read((char*)&d,sizeof(d));
-            if (id_product != d.Product_id){
+
+
                 cout<<"product: "<<d.Product_name<<'\t'
             <<"Amount of disccount: "<<d.Discount_amount<<'\t'
             <<"from: "<<d.start_date<<'\t'
             <<"to: "<<d.end_date<<'\t'<<endl;
 
-            id_product=d.Product_id;
-            }
+
+             file.read((char*)&d,sizeof(d));
 
         }
     }else {

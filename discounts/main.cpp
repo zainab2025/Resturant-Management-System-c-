@@ -12,6 +12,7 @@ public:
     //discount on products
     int Menue_id;//here we will connect with the product class
     char Menue_type[20]; //name will be used to displayed on the file
+    double charge;
 };
 //allowed for IT staff to add discounts
 void add_Product_Discount()
@@ -22,13 +23,13 @@ void add_Product_Discount()
     char c='Y';
     while (c=='Y')
     {
-        cout<<"  -----Entre dicount id-----  "<<endl;
+        cout<<"  -----Entre discount id-----  "<<endl;
         cin>>d.Discount_id;
 
-        cout<<"  -----Entre dicount start date-----  "<<endl;
+        cout<<"  -----Entre discount start date-----  "<<endl;
         cin>>d.start_date;
 
-        cout<<"  -----Entre dicount End date-----  "<<endl;
+        cout<<"  -----Entre discount End date-----  "<<endl;
         cin>>d.end_date;
 
         cout<<"  -----Entre product id-----  "<<endl;
@@ -37,9 +38,15 @@ void add_Product_Discount()
         cout<<"  -----Entre product name-----  "<<endl;
         cin>>d.Menue_type;
 
+        cout<<"  -----Entre the original price of the product-----  "<<endl;
+        cin>>d.charge;
+
+        cout<<"  -----Entre Amount of Discount-----  "<<endl;
+        cin>>d.Discount_amount;
+
         discounts.write((char*)&d,sizeof(d));
 
-        cout<<"----------Do You Want to Add a new Discount? (Y/N)----------";
+        cout<<"----------Do You Want to Add a new Discount? (Y/N)----------"<<endl;
             cin>>c; //take decision to complete asking for new discounts
     }
     discounts.close();
@@ -55,11 +62,12 @@ void display_Product_Discount()
         while (!file.eof()){
 
 
-                cout<<"product: "<<d.Menue_type<<'\t'
-            <<"Amount of disccount: "<<d.Discount_amount<<'\t'
-            <<"from: "<<d.start_date<<'\t'
-            <<"to: "<<d.end_date<<'\t'<<endl;
-
+            cout<<"product:             "<<'\t'<<d.Menue_type<<endl;
+            cout<<"Amount of disccount: "<<'\t'<<d.Discount_amount<<"%"<<endl;
+            cout<<"from:                "<<'\t'<<d.start_date<<endl;
+            cout<<"to:                  "<<'\t'<<d.end_date<<endl;
+            cout<<"new Price!:          "<<'\t'<<(d.charge-(d.charge*(d.Discount_amount/100)))<<endl;
+            cout<<"---------------------------------------------------------"<<endl;
 
              file.read((char*)&d,sizeof(d));
 
@@ -72,7 +80,7 @@ void display_Product_Discount()
 
 void Search_Product(){
     char product[30];
-    cout<<"  -----Entre the product to check discount-----  ";
+    cout<<"  -----Entre the product to check discount-----  "<<endl;
     cin>>product;
 
     fstream file;
@@ -84,10 +92,13 @@ void Search_Product(){
         while (!file.eof()){
             if (!strcmp(product,d.Menue_type))
             {
-                cout<<"product: "<<d.Menue_type<<'\t'
-                    <<"Amount of disccount: "<<d.Discount_amount<<'\t'
-                    <<"from: "<<d.start_date<<'\t'
-                    <<"to: "<<d.end_date<<'\t'<<endl;
+                cout<<"product:             "<<'\t'<<d.Menue_type<<endl;
+                cout<<"Amount of disccount: "<<'\t'<<d.Discount_amount<<"%"<<endl;
+                cout<<"from:                "<<'\t'<<d.start_date<<endl;
+                cout<<"to:                  "<<'\t'<<d.end_date<<endl;
+                cout<<"new Price!:          "<<'\t'<<(d.charge-(d.charge*(d.Discount_amount/100)))<<endl;
+                cout<<"---------------------------------------------------------"<<endl;
+
                 found=true;
             }
 
@@ -107,11 +118,9 @@ void Search_Product(){
 void update_discount(){
  char product[30];
  float disc;
-    cout<<"  -----Entre the product you want to update-----  ";
+    cout<<"  -----Entre the product you want to update-----  "<<endl;
     cin>>product;
 
-    cout<<"  -----Entre the new discount-----  ";
-    cin>>disc;
 
     fstream file;
     file.open("product_discounts.txt",ios::in);
@@ -122,7 +131,7 @@ void update_discount(){
         while (!file.eof()){
             if (!strcmp(product,d.Menue_type))
             {
-                cout<<"  -----Entre the new discount-----  ";
+                cout<<"  -----Entre the new discount-----  "<<endl;
                 cin>>d.Discount_amount;
                 int curpos=file.tellg();
                 int studsiz=sizeof(d);
@@ -133,17 +142,19 @@ void update_discount(){
                 file.seekg(curpos-studsiz,ios::beg);
                 file.read((char*)&d,sizeof(d));
 
-                cout<<"product: "<<d.Menue_type<<'\t'
-                    <<"Amount of disccount: "<<d.Discount_amount<<'\t'
-                    <<"from: "<<d.start_date<<'\t'
-                    <<"to: "<<d.end_date<<'\t'<<endl;
-                found=true;
-            }
-
-             file.read((char*)&d,sizeof(d));
+                cout<<"product:             "<<'\t'<<d.Menue_type<<endl;
+                cout<<"Amount of disccount: "<<'\t'<<d.Discount_amount<<"%"<<endl;
+                cout<<"from:                "<<'\t'<<d.start_date<<endl;
+                cout<<"to:                  "<<'\t'<<d.end_date<<endl;
+                cout<<"new Price!:          "<<'\t'<<(d.charge-(d.charge*(d.Discount_amount/100)))<<endl;
+                cout<<"---------------------------------------------------------"<<endl;
 
         }
+
+        file.read((char*)&d,sizeof(d));
+        }
         if (!found) cout<<"There is no discounts on that product to update!";
+
     }
     else {
         cout<<"Ooops!...We Cannot access file"<<endl;
@@ -152,7 +163,7 @@ void update_discount(){
 
 void delete_discount(){
     char product[30];
-    cout<<"  -----Entre the discount you want delete-----  ";
+    cout<<"  -----Entre the discount you want delete-----  "<<endl;
     cin>>product;
 
     fstream file ("product_discounts.txt",ios::in);
@@ -190,11 +201,11 @@ void delete_discount(){
 
 int main (){
 
-    add_Product_Discount();
+   // add_Product_Discount();
     display_Product_Discount();
-    Search_Product();
-    update_discount();
-    delete_discount();
+    //Search_Product();
+    //update_discount();
+    //delete_discount();
 }
 
 
